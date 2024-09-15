@@ -1,7 +1,8 @@
 import { useLocation } from "react-router-dom";
 import { StarWarsCharacter } from "../../types";
-import { Typography, Grid, Paper, Box, Divider } from "@mui/material";
+import { Typography, Paper, Box } from "@mui/material";
 import { styled } from "@mui/system";
+import { Header } from "../../components/Header";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(4),
@@ -12,72 +13,50 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   },
 }));
 
-const InfoItem = styled(Typography)(({ theme }) => ({
-  marginBottom: theme.spacing(1),
-  color: theme.palette.text.secondary,
-  "& strong": {
-    color: theme.palette.text.secondary,
-    fontWeight: "bold",
-  },
-}));
-
-export default function CharacterDetails() {
+const CharacterDetails = () => {
   const location = useLocation();
   const { character } = location.state as { character: StarWarsCharacter };
 
   return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        backgroundColor: (theme) => theme.palette.background.default, 
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        padding: 5,
-      }}
-    >
+    <Box display="flex" flexDirection="column" alignItems="center">
       <Box sx={{ maxWidth: "700px", width: "100%" }}>
-        <Typography variant="h4" color="primary" align="center" gutterBottom>
-          {character.name.toUpperCase()}
-        </Typography>
-        <Divider sx={{ marginBottom: 3 }} />
-
-        <Grid container spacing={4}>
-          <Grid item xs={12}>
-            <StyledPaper>
-              <Typography
-                variant="h5"
-                color="textSecondary"
-                gutterBottom
-                sx={{ fontWeight: "bold", marginBottom: 2 }}
-              >
-                Personal Information
-              </Typography>
-              <InfoItem variant="body1">
+        <Header title={character.name.toUpperCase()} />
+        <Box>
+          <StyledPaper>
+            <Typography
+              variant="h5"
+              gutterBottom
+              sx={{ fontWeight: "600", mb: 2 }}
+            >
+              Personal Information
+            </Typography>
+            <Box display="flex" flexDirection="column" gap={1}>
+              <Typography variant="body1">
                 <strong>Height:</strong> {character.height} cm
-              </InfoItem>
-              <InfoItem variant="body1">
+              </Typography>
+              <Typography variant="body1">
                 <strong>Mass:</strong> {character.mass} kg
-              </InfoItem>
-              <InfoItem variant="body1">
+              </Typography>
+              <Typography variant="body1">
                 <strong>Hair Color:</strong> {character.hair_color}
-              </InfoItem>
-              <InfoItem variant="body1">
+              </Typography>
+              <Typography variant="body1">
                 <strong>Skin Color:</strong> {character.skin_color}
-              </InfoItem>
-              <InfoItem variant="body1">
+              </Typography>
+              <Typography variant="body1">
                 <strong>Eye Color:</strong> {character.eye_color}
-              </InfoItem>
-              <InfoItem variant="body1">
+              </Typography>
+              <Typography variant="body1">
                 <strong>Birth Year:</strong> {character.birth_year}
-              </InfoItem>
-              <InfoItem variant="body1">
+              </Typography>
+              <Typography variant="body1">
                 <strong>Gender:</strong> {character.gender}
-              </InfoItem>
-            </StyledPaper>
-          </Grid>
-        </Grid>
+              </Typography>
+            </Box>
+          </StyledPaper>
+        </Box>
       </Box>
     </Box>
   );
-}
+};
+export default CharacterDetails;

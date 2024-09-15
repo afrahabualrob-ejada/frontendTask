@@ -1,18 +1,23 @@
 import { useState } from "react";
 import { styled } from "@mui/material/styles";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import IconButton from "@mui/material/IconButton";
+import {
+  TableContainer,
+  TableHead,
+  CircularProgress,
+  TextField,
+  Typography,
+  TableRow,
+  IconButton,
+  TableBody,
+  Table,
+  Box,
+  Container,
+} from "@mui/material";
 import ChevroncenterIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { useStarWarsCharacters } from "../../hooks/useStarWar";
 import { StarWarsCharacter } from "../../types";
-import { Box, Container } from "@mui/system";
-import { CircularProgress, TextField, Typography } from "@mui/material";
 import styles from "./StarWar.module.css";
 import { useNavigate } from "react-router-dom";
 import { Header } from "../../components/Header";
@@ -20,19 +25,15 @@ import { Header } from "../../components/Header";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   width: "20%",
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "var(--primary)",
+    backgroundColor: theme.palette.primary.main,
     color: "var(--whiteText)",
   },
   [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-    color: "var(--garyText)",
     border: 0,
   },
   "&.details-cell": {
     cursor: "pointer",
-    transition: "color 0.3s",
     "&:hover": {
-      color: theme.palette.action.hover,
       textDecoration: "underline",
     },
   },
@@ -50,11 +51,10 @@ export default function StarWar() {
   const [currentPage, setCurrentPage] = useState<number>(0);
   const rowsPerPage: number = 3;
 
-  const filteredCharacters =
+  const filteredCharacters: StarWarsCharacter[] =
     charactersList?.filter((character) =>
       character.name.toLowerCase().includes(searchTerm.toLowerCase())
     ) || [];
-  console.log(filteredCharacters);
 
   const paginatedCharacters: StarWarsCharacter[] = filteredCharacters.slice(
     currentPage * rowsPerPage,
@@ -89,12 +89,12 @@ export default function StarWar() {
     <Container>
       <Header title=" Star Wars characters" />
       {isLoading ? (
-        <div className={styles.loaderContainer}>
+        <Box display="flex" justifyContent="center" my={16}>
           <CircularProgress color="primary" />
-        </div>
+        </Box>
       ) : (
         <>
-          <div className={styles.searchContainer}>
+          <Box display="flex" justifyContent="center" mb={2}>
             <TextField
               label="Search By Name"
               value={searchTerm}
@@ -102,51 +102,36 @@ export default function StarWar() {
                 setSearchTerm(e.target.value);
                 setCurrentPage(0);
               }}
-              fullWidth
-              className={styles.searchInput}
               size="small"
-              sx={{
-                "& .MuiInputBase-input": {
-                  color: "var(--garyText)",
-                },
-              }}
+              sx={{ minWidth: "300px", mb: 1, mt: 3 }}
             />
-          </div>
+          </Box>
           {paginatedCharacters.length > 0 ? (
             <>
               <TableContainer>
                 <Table sx={{ minWidth: 700 }} aria-label="star war table">
                   <TableHead>
                     <TableRow>
-                      <StyledTableCell align="left">Name</StyledTableCell>
-                      <StyledTableCell align="left">Gender</StyledTableCell>
-                      <StyledTableCell align="left">Height</StyledTableCell>
-                      <StyledTableCell align="left">Eye color</StyledTableCell>
-                      <StyledTableCell align="left">Details</StyledTableCell>
+                      <StyledTableCell>Name</StyledTableCell>
+                      <StyledTableCell>Gender</StyledTableCell>
+                      <StyledTableCell>Height</StyledTableCell>
+                      <StyledTableCell>Eye color</StyledTableCell>
+                      <StyledTableCell>Details</StyledTableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {paginatedCharacters?.map(
                       (character: StarWarsCharacter) => (
                         <StyledTableRow key={character.name}>
-                          <StyledTableCell
-                            component="th"
-                            scope="row"
-                            align="left"
-                          >
+                          <StyledTableCell component="th" scope="row">
                             {character.name}
                           </StyledTableCell>
-                          <StyledTableCell align="left">
-                            {character.gender}
-                          </StyledTableCell>
-                          <StyledTableCell align="left">
-                            {character.height}
-                          </StyledTableCell>
-                          <StyledTableCell align="left">
+                          <StyledTableCell>{character.gender}</StyledTableCell>
+                          <StyledTableCell>{character.height}</StyledTableCell>
+                          <StyledTableCell>
                             {character.eye_color}
                           </StyledTableCell>
                           <StyledTableCell
-                            align="left"
                             onClick={() => viewDetails(character)}
                             className="details-cell"
                           >
@@ -159,11 +144,11 @@ export default function StarWar() {
                 </Table>
               </TableContainer>
 
-              <div className={styles.paginationContainer}>
+              <Box display="flex" justifyContent="center" mt={4}>
                 <IconButton
                   onClick={handlePreviousPage}
                   disabled={currentPage === 0}
-                  aria-label="Previous page"
+                  aria-label="Previous-page"
                 >
                   <ChevroncenterIcon />
                 </IconButton>
@@ -183,28 +168,22 @@ export default function StarWar() {
                 <IconButton
                   onClick={handleNextPage}
                   disabled={currentPage >= totalPages - 1}
-                  aria-label="Next page"
+                  aria-label="Next-page"
                 >
                   <ChevronRightIcon />
                 </IconButton>
-              </div>
+              </Box>
             </>
           ) : (
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
+            <Box display="flex" alignItems="center" flexDirection="column">
               <img
                 src="https://static.vecteezy.com/system/resources/previews/009/007/126/non_2x/document-file-not-found-search-no-result-concept-illustration-flat-design-eps10-modern-graphic-element-for-landing-page-empty-state-ui-infographic-icon-vector.jpg"
-                alt="No Data"
+                alt="No characters match your search"
                 width="200px"
-                height="auto"
+                // height="auto"
                 style={{ height: "auto", marginBottom: "20px" }}
               />
-              <Typography variant="h6" color="textSecondary">
+              <Typography variant="h6" color="textPrimary">
                 No characters match your search..
               </Typography>
             </Box>
