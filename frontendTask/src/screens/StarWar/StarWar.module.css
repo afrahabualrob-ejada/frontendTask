@@ -1,0 +1,40 @@
+.paginationContainer {
+  margin-top: 16px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pageButton,
+.pageButtonActive {
+  margin: 0 4px;
+  padding: 8px 12px;
+  border: 0;
+  cursor: pointer;
+  background-color: transparent;
+  font-weight: 500;
+}
+.pageButtonActive {
+  border-radius: 4px;
+  background-color: var(--whiteText);
+  border: 1px solid var(--primary);
+  color: var(--primary);
+}
+.searchContainer {
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: center;
+}
+.searchInput {
+  padding: 8px;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 350px;
+  margin: 20px 0 !important;
+}
+.loaderContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+  padding: 60px 0;
+}
