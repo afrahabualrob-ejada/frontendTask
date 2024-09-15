@@ -16,3 +16,12 @@ export type StarWarsCharacter = {
   edited: string;
   url: string;
 };
+
+export type IFormInput = {
+  firstName: string;
+  lastName: string;
+  gender: string;
+  birthDate: Date | null;
+  disorders: string[];
+  workspaces: string[];
+};
