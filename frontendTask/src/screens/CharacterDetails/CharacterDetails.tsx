@@ -2,7 +2,7 @@ import { useLocation } from "react-router-dom";
 import { StarWarsCharacter } from "../../types";
 import { Typography, Paper, Box } from "@mui/material";
 import { styled } from "@mui/system";
-import { Header } from "../../components/Header";
+import { Header } from "../../components";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(4),

@@ -24,11 +24,11 @@ import {
 import { patientSchema } from "../../utills/validations/patientFormSchema";
 import { disorderList, workspaceList } from "../../utills/data";
 import { IFormInput } from "../../types";
-import { Header } from "../../components/Header";
 import { Placeholder, StyledItem } from "./PatientFormStyle";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
+import { Header } from "../../components";
 
 const PatientForm = () => {
   const {

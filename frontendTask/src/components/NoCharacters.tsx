@@ -1,5 +1,5 @@
 import { Typography, Box } from "@mui/material";
-import searchCharactersImage from "../../assets/images/searchCharacters.jpg";
+import searchCharactersImage from "../assets/images/searchCharacters.jpg";
 
 export const NoCharacters = () => {
   return (
