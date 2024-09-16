@@ -21,7 +21,7 @@ export type IFormInput = {
   firstName: string;
   lastName: string;
   gender: string;
-  birthDate: Date;
+  birthDate: Date | string;
   disorders: string[];
   workspaces: string[];
 };

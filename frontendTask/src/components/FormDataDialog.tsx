@@ -8,16 +8,23 @@ import {
 } from "@mui/material";
 import { IFormInput } from "../types";
 import DialogItem from "./DialogItem";
+import { TestIDs } from "../TestIDs";
 
-const FormDialog = ({ onClose, open, data }: IFormDialog) => {
+const FormDataDialog = ({ onClose, open, data }: IFormDataDialog) => {
   return (
     <Dialog
       open={open}
       onClose={onClose}
       aria-labelledby="patient-dialog-data"
       fullWidth
+      data-testid={TestIDs.formDataDialog}
     >
-      <DialogTitle id="patient-dialog-data-title" align="center" sx={{fontWeight:"bold"}}>
+      <DialogTitle
+        id="patient-dialog-data-title"
+        align="center"
+        sx={{ fontWeight: "bold" }}
+        data-testid={TestIDs.dialogHeader}
+      >
         PATIENT DATA
       </DialogTitle>
       <Divider />
@@ -31,15 +38,20 @@ const FormDialog = ({ onClose, open, data }: IFormDialog) => {
         ))}
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} autoFocus variant="outlined">
+        <Button
+          onClick={onClose}
+          autoFocus
+          variant="outlined"
+          data-testid={TestIDs.dialogCloseButton}
+        >
           Close
         </Button>
       </DialogActions>
     </Dialog>
   );
 };
-export default FormDialog;
-interface IFormDialog {
+export default FormDataDialog;
+interface IFormDataDialog {
   open: boolean;
   onClose: () => void;
   data: IFormInput;

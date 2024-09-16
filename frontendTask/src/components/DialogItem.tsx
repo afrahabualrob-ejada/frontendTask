@@ -1,13 +1,14 @@
 import { Box, Typography } from "@mui/material";
 import dayjs from "dayjs";
+import { TestIDs } from "../TestIDs";
 
 const DialogItem = ({ title, data }: IDialogItem) => {
   return (
     <Box display="flex" flexDirection="row" mb={1}>
-      <Typography>
+      <Typography data-testid={TestIDs.dialogItemTitle}>
         <strong>{title}: </strong>
       </Typography>
-      <Box ml={1}>
+      <Box ml={1} data-testid={TestIDs.dialogItemContent}>
         {title.toLowerCase() === "birthdate" ? (
           (dayjs.isDayjs(data) ||
             data instanceof Date ||

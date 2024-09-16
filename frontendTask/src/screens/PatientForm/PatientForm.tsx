@@ -31,7 +31,7 @@ import { StyledItem } from "./PatientForm.style";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
-import { FormDialog, Header } from "../../components";
+import { FormDataDialog, Header } from "../../components";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 const PatientForm = () => {
@@ -340,7 +340,7 @@ const PatientForm = () => {
           </Button>
         </Box>
       </form>
-      <FormDialog
+      <FormDataDialog
         open={openDialog}
         onClose={() => setOpenDialog(false)}
         data={getValues()}
