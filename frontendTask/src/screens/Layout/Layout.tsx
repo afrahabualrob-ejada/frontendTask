@@ -113,7 +113,11 @@ const Layouts = ({ children }: { children: JSX.Element }) => {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open} sx={{ background: "#eee" }}>
+      <AppBar
+        position="fixed"
+        open={open}
+        sx={{ background: "var(--garyLight)" }}
+      >
         <Toolbar>
           <IconButton
             color="default"
@@ -129,7 +133,12 @@ const Layouts = ({ children }: { children: JSX.Element }) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="subtitle1" noWrap color="primary">
+          <Typography
+            variant="h6"
+            noWrap
+            color="primary"
+            sx={{ fontWeight: "bold" }}
+          >
             Alpha Omega Frontend Task
           </Typography>
         </Toolbar>
@@ -154,19 +163,11 @@ const Layouts = ({ children }: { children: JSX.Element }) => {
               onClick={() => navigate(item.path)}
             >
               <ListItemButton
-                sx={[
-                  {
-                    minHeight: 48,
-                    px: 2.5,
-                  },
-                  open
-                    ? {
-                        justifyContent: "initial",
-                      }
-                    : {
-                        justifyContent: "center",
-                      },
-                ]}
+                sx={{
+                  minHeight: 48,
+                  px: 2.5,
+                  justifyContent: open ? "initial" : "center",
+                }}
               >
                 <ListItemIcon
                   sx={{

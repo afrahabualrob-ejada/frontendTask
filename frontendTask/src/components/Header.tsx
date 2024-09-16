@@ -8,7 +8,7 @@ const Header = ({ title }: { title: string }) => {
         color="primary"
         align="center"
         gutterBottom
-        sx={{ mt: 2 }}
+        sx={{ mt: 2, fontWeight: "bold" }}
       >
         {title}
       </Typography>

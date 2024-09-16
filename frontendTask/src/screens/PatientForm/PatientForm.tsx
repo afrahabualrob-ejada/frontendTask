@@ -20,15 +20,19 @@ import {
   Radio,
   FormGroup,
   Checkbox,
+  FormLabel,
+  InputLabel,
+  OutlinedInput,
 } from "@mui/material";
 import { patientSchema } from "../../utills/validations/patientFormSchema";
 import { disorderList, workspaceList } from "../../utills/data";
 import { IFormInput } from "../../types";
-import { Placeholder, StyledItem } from "./PatientFormStyle";
+import { StyledItem } from "./PatientFormStyle";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { Header } from "../../components";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 const PatientForm = () => {
   const {
@@ -53,14 +57,13 @@ const PatientForm = () => {
     name: "workspaces" as never,
   });
 
-  const addWorkspace = () => append("");
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     console.log("Form submitted with data:", data);
   };
 
   useEffect(() => {
     if (fields.length === 0) append("");
-  }, [fields, append]);
+  }, []);
 
   const selectedWorkspaces = watch("workspaces");
   const getFilteredOptions = (currentIndex: number) => {
@@ -69,6 +72,13 @@ const PatientForm = () => {
     );
     return workspaceList.filter((option) => !selectedValues.includes(option));
   };
+  const addWorkspace = () => {
+    const lastWorkspace = selectedWorkspaces[selectedWorkspaces.length - 1];
+    if (lastWorkspace) {
+      append("");
+    }
+  };
+
   const Star = () => <span style={{ color: "var(--primary)" }}> * </span>;
   return (
     <Container>
@@ -88,20 +98,18 @@ const PatientForm = () => {
             control={control}
             render={({ field }) => (
               <>
-                <Box sx={{ position: "relative" }}>
-                  <TextField
-                    size="small"
-                    {...field}
-                    variant="outlined"
-                    sx={{ minWidth: "250px", mr: 4 }}
-                  />
-                  {!field.value && (
-                    <Placeholder>
-                      First Name <Star />
-                    </Placeholder>
-                  )}
-                </Box>
-
+                <TextField
+                  size="small"
+                  {...field}
+                  variant="outlined"
+                  sx={{ minWidth: "250px", mr: 4 }}
+                  label={
+                    <Typography>
+                      First Name
+                      <Star />
+                    </Typography>
+                  }
+                />
                 {errors.firstName && (
                   <FormHelperText error>
                     {errors.firstName.message}
@@ -117,19 +125,18 @@ const PatientForm = () => {
             control={control}
             render={({ field }) => (
               <>
-                <Box sx={{ position: "relative" }}>
-                  <TextField
-                    {...field}
-                    variant="outlined"
-                    size="small"
-                    sx={{ minWidth: "250px" }}
-                  />
-                  {!field.value && (
-                    <Placeholder>
-                      Last Name <Star />
-                    </Placeholder>
-                  )}
-                </Box>
+                <TextField
+                  size="small"
+                  {...field}
+                  variant="outlined"
+                  sx={{ minWidth: "250px", mr: 4 }}
+                  label={
+                    <Typography>
+                      Last Name
+                      <Star />
+                    </Typography>
+                  }
+                />
                 {errors.lastName && (
                   <FormHelperText error>
                     {errors.lastName.message}
@@ -140,10 +147,10 @@ const PatientForm = () => {
           />
         </FormControl>
         <FormControl fullWidth margin="none" sx={{ mt: 2 }}>
-          <Typography variant="body2" color="textPrimary">
+          <FormLabel>
             Gender
             <Star />
-          </Typography>
+          </FormLabel>
           <Controller
             name="gender"
             control={control}
@@ -157,8 +164,19 @@ const PatientForm = () => {
                 row
                 sx={{ ml: 1 }}
               >
-                <StyledItem value="male" control={<Radio />} label="Male" />
-                <StyledItem value="female" control={<Radio />} label="Female" />
+                <StyledItem
+                  value="male"
+                  control={<Radio />}
+                  label="Male"
+                  selected={field.value === "male"}
+                />
+
+                <StyledItem
+                  value="female"
+                  control={<Radio />}
+                  label="Female"
+                  selected={field.value === "female"}
+                />
               </RadioGroup>
             )}
           />
@@ -181,7 +199,7 @@ const PatientForm = () => {
                   }
                   value={field.value}
                   onChange={field.onChange}
-                  maxDate={dayjs().subtract(1, "day")}
+                  maxDate={dayjs().endOf("day")}
                   slotProps={{ textField: { size: "small" } }}
                 />
               </LocalizationProvider>
@@ -193,10 +211,10 @@ const PatientForm = () => {
         </FormControl>
 
         <FormControl fullWidth margin="normal" sx={{ mt: 3 }}>
-          <Typography variant="body2" color="textPrimary" sx={{ m: 0 }}>
+          <FormLabel>
             Disorders
             <Star />
-          </Typography>
+          </FormLabel>
           <FormGroup row sx={{ ml: 1, rowGap: 1 }}>
             {disorderList.map((disorder) => (
               <Controller
@@ -209,18 +227,15 @@ const PatientForm = () => {
                       <Checkbox
                         checked={field.value.includes(disorder)}
                         onChange={(e) => {
-                          const selectedDisorders = field.value || [];
-                          if (e.target.checked) {
-                            field.onChange([...selectedDisorders, disorder]);
-                          } else {
-                            field.onChange(
-                              selectedDisorders.filter((d) => d !== disorder)
-                            );
-                          }
+                          const currentDisorder = e.target.checked
+                            ? [...field.value, disorder]
+                            : field.value.filter((d) => d !== disorder);
+                          field.onChange(currentDisorder);
                         }}
                       />
                     }
                     label={disorder}
+                    selected={field.value.includes(disorder)}
                   />
                 )}
               />
@@ -230,7 +245,7 @@ const PatientForm = () => {
             <FormHelperText error>{errors.disorders.message}</FormHelperText>
           )}
         </FormControl>
-        <Box display="flex" gap={2} flexWrap="wrap" rowGap={0}>
+        <Box display="flex" gap={2} flexWrap="wrap" rowGap={0} mt={1}>
           {fields.map((item, index) => (
             <FormControl
               key={item.id}
@@ -238,18 +253,32 @@ const PatientForm = () => {
               sx={{ minWidth: "250px" }}
               size="small"
             >
+              <InputLabel id="demo-multiple-name-label">
+                <Typography>
+                  Workspace template <Star />
+                </Typography>
+              </InputLabel>
+
               <Controller
                 name={`workspaces.${index}`}
                 control={control}
                 render={({ field }) => (
                   <Select
+                    IconComponent={KeyboardArrowDownIcon}
+                    labelId="demo-multiple-name-label"
                     value={field.value || ""}
-                    displayEmpty
                     onChange={(e) => field.onChange(e.target.value)}
+                    input={
+                      <OutlinedInput
+                        label={
+                          <Typography>
+                            Workspace template
+                            <Star />
+                          </Typography>
+                        }
+                      />
+                    }
                   >
-                    <MenuItem disabled value="">
-                      Workspace template <Star />
-                    </MenuItem>
                     {getFilteredOptions(index).map((name) => (
                       <MenuItem key={name} value={name}>
                         {name}
@@ -266,21 +295,30 @@ const PatientForm = () => {
             </FormControl>
           ))}
         </Box>
-        <Button
-          type="button"
-          variant="outlined"
-          onClick={addWorkspace}
-          color="success"
-          sx={{ textTransform: "none", mt: 1 }}
-          disabled={selectedWorkspaces.length >= workspaceList.length}
+        <Box
+          display="flex"
+          alignItems="center"
+          gap={2}
+          flexWrap="wrap"
+          rowGap={1}
         >
-          Add More Workspace
-        </Button>
-        {selectedWorkspaces.length >= workspaceList.length && (
-          <FormHelperText error sx={{ mt: 1 }}>
-            Sorry,All existing workspace added..
-          </FormHelperText>
-        )}
+          <Button
+            type="button"
+            variant="outlined"
+            onClick={addWorkspace}
+            color="success"
+            sx={{ textTransform: "none", mt: 1 }}
+            disabled={selectedWorkspaces.length >= workspaceList.length}
+          >
+            Add More Workspace
+          </Button>
+          {selectedWorkspaces.length >= workspaceList.length && (
+            <FormHelperText sx={{ mt: 1 }}>
+              Sorry,All existing workspace already added..
+            </FormHelperText>
+          )}
+        </Box>
+
         <Box mt={3} display="flex" gap={2}>
           <Button
             type="submit"
@@ -304,5 +342,4 @@ const PatientForm = () => {
     </Container>
   );
 };
-
 export default PatientForm;

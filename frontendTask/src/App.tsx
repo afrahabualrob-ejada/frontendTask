@@ -1,35 +1,29 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import "./App.css";
+import { ThemeProvider } from "@mui/material";
+import theme from "./theme/theme";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { CharacterDetails, PatientForm, StarWar } from "./screens";
+import Layouts from "./screens/Layout/Layout";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const queryClient = new QueryClient();
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={theme}>
+        <Router>
+          <Layouts>
+            <Routes>
+              <Route path="/" element={<StarWar />} />
+              <Route path="/character/:name" element={<CharacterDetails />} />
+              <Route path="/form" element={<PatientForm />} />
+            </Routes>
+          </Layouts>
+        </Router>
+      </ThemeProvider>
+    </QueryClientProvider>
+  );
 }
 
-export default App
+export default App;

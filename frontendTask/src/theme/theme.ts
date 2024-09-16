@@ -11,11 +11,11 @@ const theme = createTheme({
       main: "#bbdfb8",
       // light: "##EDF7ED",
     },
-    text: {
-      // primary: "#FFF",
-      // secondary: "#666666",
-      // disabled: "#AAAAAA",
-    },
+    // text: {
+    // primary: "#FFF",
+    // secondary: "#666666",
+    // disabled: "#AAAAAA",
+    // },
     // background: {
     // default: "#f3f3f3",
     // paper: "#ffffff",
