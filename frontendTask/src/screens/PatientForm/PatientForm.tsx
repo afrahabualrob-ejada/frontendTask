@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   useForm,
   Controller,
@@ -31,7 +31,7 @@ import { StyledItem } from "./PatientForm.style";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
-import { Header } from "../../components";
+import { FormDialog, Header } from "../../components";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 const PatientForm = () => {
@@ -41,13 +41,14 @@ const PatientForm = () => {
     formState: { errors },
     reset,
     watch,
+    getValues,
   } = useForm<IFormInput>({
     resolver: yupResolver(patientSchema),
     defaultValues: {
       firstName: "",
       lastName: "",
       gender: "",
-      birthDate: null,
+      birthDate: undefined,
       disorders: [],
       workspaces: [""],
     },
@@ -57,10 +58,10 @@ const PatientForm = () => {
     name: "workspaces" as never,
   });
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    console.log("Form submitted with data:", data);
+  const onSubmit: SubmitHandler<IFormInput> = () => {
+    setOpenDialog(true);
   };
-
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
   useEffect(() => {
     if (fields.length === 0) append("");
   }, []);
@@ -339,6 +340,11 @@ const PatientForm = () => {
           </Button>
         </Box>
       </form>
+      <FormDialog
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+        data={getValues()}
+      />
     </Container>
   );
 };
