@@ -198,7 +198,7 @@ const PatientForm = () => {
                       <Star />
                     </Typography>
                   }
-                  value={field.value}
+                  value={field.value || null}
                   onChange={field.onChange}
                   maxDate={dayjs().endOf("day")}
                   slotProps={{ textField: { size: "small" } }}
