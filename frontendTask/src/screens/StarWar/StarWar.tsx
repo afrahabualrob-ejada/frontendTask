@@ -6,7 +6,6 @@ import {
   TableHead,
   CircularProgress,
   TextField,
-  Typography,
   TableRow,
   IconButton,
   TableBody,
@@ -20,16 +19,14 @@ import { useStarWarsCharacters } from "../../hooks/useStarWar";
 import { StarWarsCharacter } from "../../types";
 import styles from "./StarWar.module.css";
 import { useNavigate } from "react-router-dom";
-import { Header } from "../../components/Header";
+import { Header, NoCharacters } from "../../components";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   width: "20%",
+  border: 0,
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.primary.main,
     color: "var(--whiteText)",
-  },
-  [`&.${tableCellClasses.body}`]: {
-    border: 0,
   },
   "&.details-cell": {
     cursor: "pointer",
@@ -175,18 +172,7 @@ export default function StarWar() {
               </Box>
             </>
           ) : (
-            <Box display="flex" alignItems="center" flexDirection="column">
-              <img
-                src="https://static.vecteezy.com/system/resources/previews/009/007/126/non_2x/document-file-not-found-search-no-result-concept-illustration-flat-design-eps10-modern-graphic-element-for-landing-page-empty-state-ui-infographic-icon-vector.jpg"
-                alt="No characters match your search"
-                width="200px"
-                // height="auto"
-                style={{ height: "auto", marginBottom: "20px" }}
-              />
-              <Typography variant="h6" color="textPrimary">
-                No characters match your search..
-              </Typography>
-            </Box>
+            <NoCharacters />
           )}
         </>
       )}

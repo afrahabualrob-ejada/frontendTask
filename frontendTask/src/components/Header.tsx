@@ -1,6 +1,6 @@
 import { Divider, Typography } from "@mui/material";
 
-export const Header = ({ title }: { title: string }) => {
+const Header = ({ title }: { title: string }) => {
   return (
     <>
       <Typography
@@ -8,7 +8,7 @@ export const Header = ({ title }: { title: string }) => {
         color="primary"
         align="center"
         gutterBottom
-        sx={{ mt: 5 }}
+        sx={{ mt: 2 }}
       >
         {title}
       </Typography>
@@ -16,3 +16,4 @@ export const Header = ({ title }: { title: string }) => {
     </>
   );
 };
+export default Header;
