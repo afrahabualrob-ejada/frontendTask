@@ -1,52 +1,32 @@
 import { useState } from "react";
-import { styled } from "@mui/material/styles";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import {
   TableContainer,
   TableHead,
   CircularProgress,
   TextField,
   TableRow,
-  IconButton,
   TableBody,
   Table,
   Box,
   Container,
+  Pagination,
+  PaginationItem,
 } from "@mui/material";
-import ChevroncenterIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { useStarWarsCharacters } from "../../hooks/useStarWar";
 import { StarWarsCharacter } from "../../types";
-import styles from "./StarWar.module.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { Header, NoCharacters } from "../../components";
+import { StyledTableCell, StyledTableRow } from "./StarWar.style";
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  width: "20%",
-  border: 0,
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.primary.main,
-    color: "var(--whiteText)",
-  },
-  "&.details-cell": {
-    cursor: "pointer",
-    "&:hover": {
-      textDecoration: "underline",
-    },
-  },
-}));
-
-const StyledTableRow = styled(TableRow)(() => ({
-  "&:nth-of-type(even)": {
-    backgroundColor: "var(--backgroundGray)",
-  },
-}));
-
-export default function StarWar() {
+const StarWar = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const { data: charactersList, isLoading } = useStarWarsCharacters();
-  const [currentPage, setCurrentPage] = useState<number>(0);
   const rowsPerPage: number = 3;
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const query = new URLSearchParams(location.search);
+  const currentPage = parseInt(query.get("page") || "1");
 
   const filteredCharacters: StarWarsCharacter[] =
     charactersList?.filter((character) =>
@@ -54,37 +34,21 @@ export default function StarWar() {
     ) || [];
 
   const paginatedCharacters: StarWarsCharacter[] = filteredCharacters.slice(
-    currentPage * rowsPerPage,
-    currentPage * rowsPerPage + rowsPerPage
+    (currentPage - 1) * rowsPerPage,
+    currentPage * rowsPerPage
   );
 
   const totalPages: number = Math.ceil(
     (filteredCharacters?.length || 0) / rowsPerPage
   );
 
-  const handleNextPage = () => {
-    if (currentPage < totalPages - 1) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const handlePreviousPage = () => {
-    if (currentPage > 0) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  const handlePageClick = (page: number) => {
-    setCurrentPage(page);
-  };
-  const navigate = useNavigate();
   const viewDetails = (character: StarWarsCharacter) => {
     navigate(`/character/${character.name}`, { state: { character } });
   };
 
   return (
     <Container>
-      <Header title=" Star Wars characters" />
+      <Header title="Star Wars characters" />
       {isLoading ? (
         <Box display="flex" justifyContent="center" my={16}>
           <CircularProgress color="primary" />
@@ -97,7 +61,7 @@ export default function StarWar() {
               value={searchTerm}
               onChange={(e) => {
                 setSearchTerm(e.target.value);
-                setCurrentPage(0);
+                navigate("?page=1");
               }}
               size="small"
               sx={{ minWidth: "300px", mb: 1, mt: 3 }}
@@ -140,35 +104,18 @@ export default function StarWar() {
                   </TableBody>
                 </Table>
               </TableContainer>
-
               <Box display="flex" justifyContent="center" mt={4}>
-                <IconButton
-                  onClick={handlePreviousPage}
-                  disabled={currentPage === 0}
-                  aria-label="Previous-page"
-                >
-                  <ChevroncenterIcon />
-                </IconButton>
-                {Array.from({ length: totalPages }, (_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => handlePageClick(index)}
-                    className={
-                      currentPage === index
-                        ? styles.pageButtonActive
-                        : styles.pageButton
-                    }
-                  >
-                    {index + 1}
-                  </button>
-                ))}
-                <IconButton
-                  onClick={handleNextPage}
-                  disabled={currentPage >= totalPages - 1}
-                  aria-label="Next-page"
-                >
-                  <ChevronRightIcon />
-                </IconButton>
+                <Pagination
+                  page={currentPage}
+                  count={totalPages}
+                  renderItem={(item) => (
+                    <PaginationItem
+                      component={Link}
+                      to={`?page=${item.page}`}
+                      {...item}
+                    />
+                  )}
+                />
               </Box>
             </>
           ) : (
@@ -178,4 +125,5 @@ export default function StarWar() {
       )}
     </Container>
   );
-}
+};
+export default StarWar;

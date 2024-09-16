@@ -24,10 +24,10 @@ import {
   InputLabel,
   OutlinedInput,
 } from "@mui/material";
-import { patientSchema } from "../../utills/validations/patientFormSchema";
-import { disorderList, workspaceList } from "../../utills/data";
+import { patientSchema } from "../../utils/validations/patientFormSchema";
+import { disorderList, workspaceList } from "../../utils/data";
 import { IFormInput } from "../../types";
-import { StyledItem } from "./PatientFormStyle";
+import { StyledItem } from "./PatientForm.style";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";

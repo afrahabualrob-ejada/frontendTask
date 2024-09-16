@@ -1,8 +1,7 @@
-import { FormControlLabel } from "@mui/material";
-import { alpha, styled } from "@mui/system";
+import { CSSObject, FormControlLabel, alpha, styled } from "@mui/material";
 
 export const StyledItem = styled(FormControlLabel)<{ selected: boolean }>(
-  ({ theme, selected }) => ({
+  ({ theme, selected }): CSSObject => ({
     border: `1px solid ${theme.palette.divider}`,
     borderColor: selected
       ? alpha(theme.palette.primary.main, 0.1)
