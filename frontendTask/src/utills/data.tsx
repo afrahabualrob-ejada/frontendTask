@@ -1,3 +1,6 @@
+import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
+import FormatIndentDecreaseIcon from "@mui/icons-material/FormatIndentDecrease";
+
 export const disorderList: string[] = [
   "PD",
   "ET",
@@ -15,4 +18,13 @@ export const workspaceList: string[] = [
   "Template 3",
   "Template 4",
   "Template 5",
+];
+
+export const sideBarData = [
+  { name: "Star War", path: "/", icon: <EmojiPeopleIcon color="primary" /> },
+  {
+    name: "Patient Form",
+    path: "/form",
+    icon: <FormatIndentDecreaseIcon color="primary" />,
+  },
 ];
